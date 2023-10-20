@@ -1,7 +1,7 @@
 # Importa las librerías necesarias
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 
 # Configuración de la base de datos
 db = SQLAlchemy()
@@ -16,7 +16,7 @@ class User(db.Model):
         self.password = generate_password_hash(password, method='pbkdf2',salt_length=16)
 
     def check_password(self, password):
-        return check_password_hash('pbkdf2', self.password)
+        return check_password_hash(self.password, password)
 
 class ConversionTask(db.Model):
     id = db.Column(db.Integer, primary_key=True)
